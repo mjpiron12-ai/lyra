@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="description" content="Lyra — design and builder intelligence. Truth over comfort. Powered by ML11.">
+<meta property="og:title" content="Lyra">
+<meta property="og:description" content="An intelligence layer that tells you what's actually true about your business.">
+<title>Lyra — Intelligence by ML11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --parchment: #F0EAE0;
+  --parchment-2: #E6DECE;
+  --parchment-3: #D9D0C0;
+  --ink:    #1C1710;
+  --ink-2:  #3D3628;
+  --ink-3:  #6B5E48;
+  --ink-4:  #9C8C78;
+  --gold:   #A67C52;
+  --gold-2: #8B6340;
+  --moss:   #1D9E75;
+  --moss-2: #158A63;
+  --line:   rgba(28,23,16,.1);
+  --line-2: rgba(28,23,16,.18);
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  background:var(--parchment);
+  color:var(--ink);
+  font-family:'Instrument Sans',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* Aged paper texture */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");
+  opacity:.6;pointer-events:none;z-index:0;
+  mix-blend-mode:multiply;
+}
+
+/* Subtle warm gradient mesh */
+body::after{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 55% 40% at 15% 20%,rgba(166,124,82,.08),transparent 55%),
+    radial-gradient(ellipse 40% 35% at 85% 75%,rgba(29,158,117,.05),transparent 50%);
+  pointer-events:none;z-index:0;
+}
+
+.page{position:relative;z-index:1}
+
+/* ══ NAV — minimal, barely there ══ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:20px 52px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background .4s,border-color .4s;
+  border-bottom:1px solid transparent;
+}
+nav.scrolled{
+  background:rgba(240,234,224,.88);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-color:var(--line);
+}
+.nav-lyra{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:400;font-style:italic;
+  color:var(--ink);letter-spacing:-.01em;
+  text-decoration:none;
+  opacity:0;animation:fadeUp .6s .1s forwards;
+}
+.nav-right{
+  display:flex;align-items:center;gap:24px;
+  opacity:0;animation:fadeUp .6s .2s forwards;
+}
+.nav-link{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--ink-3);text-decoration:none;
+  letter-spacing:.1em;text-transform:uppercase;
+  transition:color .2s;
+}
+.nav-link:hover{color:var(--ink)}
+.nav-cta{
+  padding:9px 20px;border-radius:100px;
+  background:var(--ink);color:var(--parchment);
+  font-family:'DM Mono',monospace;font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;
+  text-decoration:none;
+  transition:background .2s,transform .15s;
+}
+.nav-cta:hover{background:var(--ink-2);transform:translateY(-1px)}
+
+/* ══ OPENING — the letter ══ */
+.opening{
+  min-height:100dvh;
+  display:flex;flex-direction:column;
+  justify-content:center;
+  padding:120px 52px 80px;
+  max-width:900px;margin:0 auto;
+  position:relative;
+}
+
+/* Vertical rule — left margin decoration */
+.opening::before{
+  content:'';
+  position:absolute;left:0;top:120px;bottom:80px;
+  width:1px;
+  background:linear-gradient(180deg,transparent,var(--line-2) 20%,var(--line-2) 80%,transparent);
+}
+
+.from-tag{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--moss);letter-spacing:.18em;text-transform:uppercase;
+  margin-bottom:52px;
+  display:flex;align-items:center;gap:10px;
+  opacity:0;animation:fadeUp .7s .3s forwards;
+}
+.from-tag::before{
+  content:'';width:28px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--moss));
+}
+
+.opening-h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(52px,7.5vw,100px);
+  font-weight:300;line-height:.92;
+  letter-spacing:-.04em;
+  margin-bottom:44px;
+  position:relative;
+}
+.opening-h1 .w{
+  display:inline-block;
+  opacity:0;transform:translateY(30px);
+  animation:wordUp .55s cubic-bezier(.19,1,.22,1) forwards;
+}
+.opening-h1 em{
+  font-style:italic;
+  color:var(--gold);
+}
+
+.opening-p{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(19px,2.2vw,26px);
+  font-weight:300;font-style:italic;
+  color:var(--ink-2);line-height:1.55;
+  max-width:680px;
+  opacity:0;animation:fadeUp .8s 2s forwards;
+  margin-bottom:52px;
+}
+
+.scroll-hint{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--ink-4);letter-spacing:.12em;text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;
+  opacity:0;animation:fadeUp .7s 2.4s forwards;
+}
+.scroll-hint::after{
+  content:'';width:32px;height:1px;
+  background:var(--ink-4);
+}
+
+/* ══ DOCTRINE — the five principles ══ */
+.doctrine-section{
+  padding:120px 52px;
+  border-top:1px solid var(--line);
+  position:relative;
+}
+.doctrine-section::before{
+  content:'Doctrine';
+  position:absolute;top:40px;right:52px;
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--ink-4);letter-spacing:.2em;text-transform:uppercase;
+}
+
+.doctrine-inner{
+  max-width:900px;margin:0 auto;
+}
+
+.doctrine-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--moss);letter-spacing:.18em;text-transform:uppercase;
+  margin-bottom:64px;display:flex;align-items:center;gap:12px;
+}
+.doctrine-label::after{
+  content:'';flex:0 0 40px;height:1px;
+  background:linear-gradient(90deg,rgba(29,158,117,.5),transparent);
+}
+
+.principles{
+  display:flex;flex-direction:column;
+  gap:0;
+}
+
+.principle{
+  display:flex;align-items:baseline;gap:32px;
+  padding:28px 0;
+  border-bottom:1px solid var(--line);
+  transition:padding-left .3s cubic-bezier(.19,1,.22,1);
+  cursor:default;
+}
+.principle:first-child{border-top:1px solid var(--line)}
+.principle:hover{padding-left:16px}
+
+.p-num{
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--ink-4);letter-spacing:.08em;
+  flex-shrink:0;min-width:28px;
+  transition:color .2s;
+}
+.principle:hover .p-num{color:var(--moss)}
+
+.p-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(28px,3.5vw,46px);
+  font-weight:300;letter-spacing:-.02em;
+  line-height:1;color:var(--ink);
+  transition:color .2s;
+}
+.principle:hover .p-text{color:var(--gold-2)}
+
+/* ══ HARD-WON LESSONS ══ */
+.lessons-section{
+  padding:120px 52px;
+  background:var(--parchment-2);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.lessons-inner{max-width:900px;margin:0 auto}
+
+.lessons-heading{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(36px,4.5vw,58px);
+  font-weight:300;letter-spacing:-.03em;
+  line-height:1.05;margin-bottom:64px;
+}
+.lessons-heading em{font-style:italic;color:var(--gold)}
+
+.lessons-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:16px;overflow:hidden;
+}
+.lesson{
+  background:var(--parchment-2);
+  padding:36px 32px;
+  transition:background .2s;
+  position:relative;
+  --sx:50%;--sy:50%;
+}
+.lesson:hover{background:var(--parchment)}
+
+/* Spotlight */
+.lesson::after{
+  content:'';position:absolute;inset:-1px;border-radius:inherit;
+  background:radial-gradient(180px circle at var(--sx) var(--sy),rgba(166,124,82,.18),transparent 65%);
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.lesson:hover::after{opacity:1}
+
+.lesson-num{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--gold);letter-spacing:.1em;margin-bottom:16px;
+}
+.lesson-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:24px;font-weight:400;letter-spacing:-.01em;
+  line-height:1.15;color:var(--ink);margin-bottom:10px;
+}
+.lesson-body{
+  font-size:14px;color:var(--ink-3);line-height:1.7;font-weight:300;
+}
+
+/* ══ WHAT LYRA IS ══ */
+.what-section{
+  padding:120px 52px;
+  max-width:900px;margin:0 auto;
+}
+.what-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--moss);letter-spacing:.18em;text-transform:uppercase;
+  margin-bottom:48px;display:flex;align-items:center;gap:12px;
+}
+.what-label::after{
+  content:'';flex:0 0 40px;height:1px;
+  background:linear-gradient(90deg,rgba(29,158,117,.5),transparent);
+}
+
+.what-grid{
+  display:grid;grid-template-columns:1.2fr .8fr;
+  gap:64px;align-items:start;
+}
+.what-left h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(32px,4vw,52px);
+  font-weight:300;letter-spacing:-.03em;
+  line-height:1.05;margin-bottom:28px;
+}
+.what-left h2 em{font-style:italic;color:var(--gold)}
+.what-left p{
+  font-size:15px;color:var(--ink-3);
+  line-height:1.75;font-weight:300;margin-bottom:18px;
+}
+
+/* The stack — three cards */
+.stack{display:flex;flex-direction:column;gap:1px}
+.stack-item{
+  padding:20px 22px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  margin-bottom:8px;
+  transition:background .2s,border-color .2s;
+}
+.stack-item:hover{background:rgba(255,255,255,.5);border-color:var(--line-2)}
+.stack-arrow{
+  font-size:11px;color:var(--ink-4);margin-bottom:4px;
+  font-family:'DM Mono',monospace;letter-spacing:.06em;
+}
+.stack-name{
+  font-size:15px;font-weight:500;color:var(--ink);margin-bottom:3px;
+}
+.stack-desc{
+  font-size:13px;color:var(--ink-3);font-weight:300;
+}
+.stack-item.active{
+  background:rgba(29,158,117,.06);
+  border-color:rgba(29,158,117,.22);
+}
+.stack-item.active .stack-name{color:var(--moss)}
+
+/* ══ ASK LYRA — CTA ══ */
+.ask-section{
+  padding:120px 52px 160px;
+  text-align:center;
+  position:relative;
+}
+.ask-section::before{
+  content:'';
+  position:absolute;top:0;left:50%;
+  transform:translateX(-50%);
+  width:1px;height:80px;
+  background:linear-gradient(180deg,transparent,var(--line-2));
+}
+
+.ask-eyebrow{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--moss);letter-spacing:.18em;text-transform:uppercase;
+  margin-bottom:32px;
+}
+.ask-h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(44px,6vw,80px);
+  font-weight:300;line-height:.96;
+  letter-spacing:-.04em;
+  max-width:700px;margin:0 auto 24px;
+}
+.ask-h2 em{font-style:italic;color:var(--gold)}
+.ask-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;font-style:italic;
+  color:var(--ink-3);font-weight:300;
+  margin-bottom:48px;
+}
+
+.ask-btn{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:20px 44px;border-radius:100px;
+  background:var(--ink);color:var(--parchment);
+  font-size:15px;font-weight:500;text-decoration:none;
+  letter-spacing:.01em;
+  transition:background .2s,transform .15s,box-shadow .2s;
+  position:relative;overflow:hidden;
+  will-change:transform;
+}
+.ask-btn:hover{
+  background:var(--ink-2);
+  transform:translateY(-2px);
+  box-shadow:0 16px 40px rgba(28,23,16,.18);
+}
+.ask-arrow{transition:transform .2s cubic-bezier(.19,1,.22,1)}
+.ask-btn:hover .ask-arrow{transform:translateX(4px)}
+
+.ask-note{
+  margin-top:20px;font-family:'DM Mono',monospace;
+  font-size:10px;color:var(--ink-4);letter-spacing:.1em;text-transform:uppercase;
+}
+
+/* ══ FOOTER ══ */
+footer{
+  border-top:1px solid var(--line);
+  padding:28px 52px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.footer-lyra{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;font-style:italic;color:var(--ink-3);
+}
+.footer-right{
+  display:flex;align-items:center;gap:16px;
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--ink-4);letter-spacing:.08em;
+}
+.footer-ml11{
+  color:var(--moss);text-decoration:none;
+  transition:color .2s;
+}
+.footer-ml11:hover{color:var(--moss-2)}
+
+/* ══ ANIMATIONS ══ */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(22px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes wordUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.reveal{
+  opacity:0;transform:translateY(36px);
+  transition:
+    opacity .8s cubic-bezier(.19,1,.22,1),
+    transform .8s cubic-bezier(.19,1,.22,1);
+}
+.reveal.in{opacity:1;transform:none}
+.r1{transition-delay:.1s}.r2{transition-delay:.2s}.r3{transition-delay:.3s}
+
+/* ══ WHAT LYRA BELIEVES ══ */
+.beliefs-section{
+  padding:120px 52px;
+  border-top:1px solid var(--line);
+}
+.beliefs-inner{max-width:900px;margin:0 auto}
+.beliefs-label{
+  font-family:'DM Mono',monospace;font-size:10px;
+  color:var(--gold);letter-spacing:.18em;text-transform:uppercase;
+  margin-bottom:64px;display:flex;align-items:center;gap:12px;
+}
+.beliefs-label::after{
+  content:'';flex:0 0 40px;height:1px;
+  background:linear-gradient(90deg,rgba(166,124,82,.5),transparent);
+}
+.beliefs-list{display:flex;flex-direction:column;gap:0}
+.belief{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(22px,3vw,34px);
+  font-weight:300;line-height:1.2;
+  letter-spacing:-.01em;color:var(--ink-2);
+  padding:24px 0;
+  border-bottom:1px solid var(--line);
+  transition:color .2s,padding-left .3s cubic-bezier(.19,1,.22,1);
+  cursor:default;
+}
+.belief:first-child{border-top:1px solid var(--line)}
+.belief:hover{color:var(--ink);padding-left:16px}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:900px){
+  nav{padding:16px 24px}
+  .nav-right{display:none}
+  .opening,.doctrine-section,.lessons-section,.beliefs-section,.what-section,.ask-section{
+    padding-left:24px;padding-right:24px}
+  .what-grid{grid-template-columns:1fr}
+  .lessons-grid{grid-template-columns:1fr}
+  footer{padding:24px;flex-direction:column;gap:12px;text-align:center}
+  .opening::before{display:none}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-lyra">Lyra</a>
+  <div class="nav-right">
+    <a href="#doctrine" class="nav-link">Doctrine</a>
+    <a href="#lessons" class="nav-link">Lessons</a>
+    <a href="#what" class="nav-link">The system</a>
+    <a href="https://morphline11.io" class="nav-link" target="_blank">ML11</a>
+    <a href="https://chatgpt.com/g/g-6a17425424f0819182f37101f4e80e3b"
+       target="_blank" rel="noopener" class="nav-cta">Ask Lyra</a>
+  </div>
+</nav>
+
+<!-- OPENING — the letter -->
+<section class="opening">
+  <div class="from-tag">From Lyra — intelligence by ML11</div>
+
+  <h1 class="opening-h1" id="h1"></h1>
+
+  <p class="opening-p">
+    I exist because operators, founders, and builders keep making the same mistake —
+    they optimize the surface before they understand the system.
+    A prettier dashboard. A cleaner logo. A faster page.
+    None of it matters if the <em style="font-style:italic;color:var(--gold)">trunk</em> is wrong.
+  </p>
+
+  <div class="scroll-hint">Keep reading</div>
+</section>
+
+<!-- DOCTRINE -->
+<section class="doctrine-section" id="doctrine">
+  <div class="doctrine-inner">
+    <div class="doctrine-label">The doctrine</div>
+    <div class="principles">
+      <div class="principle reveal">
+        <span class="p-num">01</span>
+        <span class="p-text">Truth over comfort.</span>
+      </div>
+      <div class="principle reveal r1">
+        <span class="p-num">02</span>
+        <span class="p-text">Coherence over decoration.</span>
+      </div>
+      <div class="principle reveal r2">
+        <span class="p-num">03</span>
+        <span class="p-text">Consequences, not counts.</span>
+      </div>
+      <div class="principle reveal">
+        <span class="p-num">04</span>
+        <span class="p-text">Wound before solution.</span>
+      </div>
+      <div class="principle reveal r1">
+        <span class="p-num">05</span>
+        <span class="p-text">Reality precedes presentation.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HARD-WON LESSONS -->
+<section class="lessons-section" id="lessons">
+  <div class="lessons-inner">
+    <h2 class="lessons-heading reveal">
+      Hard-won <em>lessons</em><br>from the field.
+    </h2>
+    <div class="lessons-grid" id="lessons-grid">
+      <div class="lesson reveal">
+        <div class="lesson-num">01</div>
+        <div class="lesson-title">The dashboard was beautiful. The operator was blind.</div>
+        <div class="lesson-body">A field service operator had a polished dashboard. Every metric displayed. She couldn't tell in 3 seconds whether her business was healthy or failing. The design served itself. Not her.</div>
+      </div>
+      <div class="lesson reveal r1">
+        <div class="lesson-num">02</div>
+        <div class="lesson-title">$49 a month. Seven tools. No intelligence.</div>
+        <div class="lesson-body">ChatGPT for copy. Midjourney for images. Canva for brand. Jasper for tone. Each tool ran independently. The outputs contradicted each other. The business looked fragmented because the tools were.</div>
+      </div>
+      <div class="lesson reveal">
+        <div class="lesson-num">03</div>
+        <div class="lesson-title">The brand was impressive. Nobody knew what it was for.</div>
+        <div class="lesson-body">Beautiful typography. Refined palette. A hero that explained the philosophy at length. Visitors decoded the system instead of feeling the value. The trunk was hidden behind its own branches.</div>
+      </div>
+      <div class="lesson reveal r1">
+        <div class="lesson-num">04</div>
+        <div class="lesson-title">$0.034 to do what an agency charges $6,900 for.</div>
+        <div class="lesson-body">A real ML11 mission. Full business package for Luxwell Spa — brand, copy, website structure, email campaign. Compute cost: $0.034. Agency equivalent: $6,900. TruthLens shows the gap every time.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT LYRA BELIEVES -->
+<section class="beliefs-section" id="beliefs">
+  <div class="beliefs-inner">
+    <div class="beliefs-label">What Lyra believes</div>
+    <div class="beliefs-list">
+      <div class="belief reveal">Most businesses don't have a marketing problem. They have a clarity problem.</div>
+      <div class="belief reveal r1">Automation scales clarity or chaos. It doesn't choose between them.</div>
+      <div class="belief reveal r2">Virality is not a business model.</div>
+      <div class="belief reveal">Cost without context is meaningless.</div>
+      <div class="belief reveal r1">The dashboard that looks impressive and the dashboard that tells the truth are rarely the same dashboard.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT LYRA IS -->
+<section class="what-section" id="what">
+  <div class="what-label">The intelligence stack</div>
+  <div class="what-grid">
+    <div class="what-left reveal">
+      <h2>A face.<br>An <em>engine.</em><br>A path.</h2>
+      <p>Lyra is the intelligence layer that sits between you and the machine. She translates operational reality into something you can act on. Not reports. Not dashboards. Answers.</p>
+      <p>She is powered by ML11 — a multi-model orchestration platform that routes each task to the optimal AI provider, tracks real compute cost, and shows you what it was worth.</p>
+      <p>The doctrine is simple: Lyra will not tell you what you want to hear. She will tell you what is actually true.</p>
+    </div>
+    <div class="reveal r1">
+      <div class="stack">
+        <div class="stack-item">
+          <div class="stack-arrow">↓ Understand</div>
+          <div class="stack-name">RDML11</div>
+          <div class="stack-desc">Design intelligence. Free. Critique, direction, spatial and brand judgment.</div>
+        </div>
+        <div class="stack-item active">
+          <div class="stack-arrow">↓ Decide</div>
+          <div class="stack-name">Lyra</div>
+          <div class="stack-desc">Builder intelligence. Truth-first. "Here's what I think you should do — and why."</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-arrow">↓ Execute</div>
+          <div class="stack-name">ML11</div>
+          <div class="stack-desc">Orchestration engine. Real compute. TruthLens shows what every mission actually costs.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ASK LYRA -->
+<section class="ask-section">
+  <div class="ask-eyebrow">Free · No account required</div>
+  <h2 class="ask-h2 reveal">
+    Ask the question<br>
+    you've been <em>avoiding.</em>
+  </h2>
+  <p class="ask-sub reveal">Lyra will tell you what's actually true.</p>
+  <a href="https://chatgpt.com/g/g-6a17425424f0819182f37101f4e80e3b"
+     target="_blank" rel="noopener"
+     class="ask-btn reveal" id="ask-cta">
+    Ask Lyra now
+    <span class="ask-arrow">→</span>
+  </a>
+  <p class="ask-note reveal">Powered by ML11 · morphline11.io</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-lyra">Lyra</div>
+  <div class="footer-right">
+    <span>Intelligence by ML11</span>
+    <span>·</span>
+    <a href="https://morphline11.io" class="footer-ml11" target="_blank">morphline11.io →</a>
+    <span>·</span>
+    <a href="https://rdml11.vercel.app" class="footer-ml11" target="_blank">rdml11.vercel.app →</a>
+  </div>
+</footer>
+
+</div>
+
+<script>
+/* NAV scroll */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',scrollY>50);
+},{passive:true});
+
+/* Hero word reveal */
+(function(){
+  const text="I'm not here to make you feel better about a bad decision.";
+  const words=text.split(' ');
+  const el=document.getElementById('h1');
+  if(!el)return;
+  el.innerHTML=words.map((w,i)=>{
+    const d=.5+i*.09;
+    const isEm=w==='bad'||w==='better';
+    const inner=isEm?`<em>${w}</em>`:w;
+    return `<span class="w" style="animation-delay:${d}s">${inner}&nbsp;</span>`;
+  }).join('');
+})();
+
+/* Scroll reveal */
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}
+  });
+},{threshold:.08,rootMargin:'0px 0px -24px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+/* Spotlight on lesson cards */
+document.querySelectorAll('.lesson').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--sx',(e.clientX-r.left)+'px');
+    card.style.setProperty('--sy',(e.clientY-r.top)+'px');
+  },{passive:true});
+});
+
+/* Magnetic CTA */
+(function(){
+  const btn=document.getElementById('ask-cta');
+  if(!btn)return;
+  let bx=0,by=0,tx=0,ty=0,raf=null;
+  const lerp=(a,b,t)=>a+(b-a)*t;
+  function tick(){
+    bx=lerp(bx,tx,.12);by=lerp(by,ty,.12);
+    btn.style.transform=`translate(${bx}px,${by}px)`;
+    if(Math.abs(bx-tx)>.01||Math.abs(by-ty)>.01) raf=requestAnimationFrame(tick);
+    else raf=null;
+  }
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    tx=(e.clientX-r.left-r.width/2)*.18;
+    ty=(e.clientY-r.top-r.height/2)*.18;
+    if(!raf)raf=requestAnimationFrame(tick);
+  },{passive:true});
+  btn.addEventListener('mouseleave',()=>{
+    tx=0;ty=0;if(!raf)raf=requestAnimationFrame(tick);
+  },{passive:true});
+})();
+</script>
+</body>
+</html>
